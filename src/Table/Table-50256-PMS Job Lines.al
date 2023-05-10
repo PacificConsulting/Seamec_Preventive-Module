@@ -15,6 +15,14 @@ table 50256 "PMS Job Lines"
         {
             DataClassification = ToBeClassified;
             TableRelation = "Task Master";
+            trigger onvalidate()
+            var
+                TaskMaster: Record "Task Master";
+            begin
+                if TaskMaster.Get("Task Code") then;
+                "Task Name" := TaskMaster."Task Name";
+                Activities := TaskMaster.Activities;
+            end;
         }
         field(4; "Task Name"; Text[30])
         {

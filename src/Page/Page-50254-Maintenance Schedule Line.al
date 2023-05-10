@@ -61,6 +61,11 @@ page 50254 "Maintenance Schedule Line"
                 {
                     ApplicationArea = all;
                 }
+                field("Start Meter Interval"; Rec."Start Meter Interval")
+                {
+                    ApplicationArea = All;
+                }
+
             }
         }
     }

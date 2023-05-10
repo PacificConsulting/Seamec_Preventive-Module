@@ -78,6 +78,22 @@ table 50255 "PMS Job Header"
             DataClassification = ToBeClassified;
             TableRelation = Employee;
         }
+        field(15; "Initial Meter Reading"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            DecimalPlaces = 0 : 0;
+        }
+        field(16; "Current Meter Reading"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            DecimalPlaces = 0 : 0;
+        }
+        field(17; "Meter Interval in Hrs"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            DecimalPlaces = 0 : 0;
+        }
+
     }
 
     keys

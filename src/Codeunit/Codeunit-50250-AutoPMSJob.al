@@ -4,8 +4,12 @@ codeunit 50250 "Auto PMS Job Creation"
 
     trigger OnRun()
     begin
-        AutoMeterInterval(Rec);
-        AutoSchedulePMS(Rec);
+        MainSchHead.Reset();
+        if MainSchHead.FindSet() then
+            repeat
+                AutoMeterInterval(MainSchHead);
+                AutoSchedulePMS(MainSchHead);
+            until MainSchHead.Next() = 0;
     end;
 
     var
@@ -20,6 +24,8 @@ codeunit 50250 "Auto PMS Job Creation"
         Loc: Record Location;
         NoSeriesMgt: Codeunit NoSeriesManagement;
         Stime: DateFormula;
+        LineCnt: Integer;
+        MTaskLine: Record "Manitenance Task Lines";
     begin
         MScheduleLine.Reset();
         MScheduleLine.SetRange("Schedule No.", Mschehead."Schedule No.");
@@ -29,16 +35,46 @@ codeunit 50250 "Auto PMS Job Creation"
                 if EquipMaster.Get(MScheduleLine."Equipment Code") then;
                 if Loc.Get(EquipMaster."Location Code") then;
                 if MScheduleLine."Schedule Start Date" = Today then begin
-                    PMSJobH.Init();
-                    Loc.TestField("PMS Job Nos");
-                    NoSeriesMgt.InitSeries(Loc."PMS Job Nos", '', Today, PMSJobH."Job No.", Loc."PMS Job Nos");
-                    PMSJobH.Validate("Schedule No.", Mschehead."Schedule No.");
-                    PMSJobH.Validate("Equipment Code", MScheduleLine."Equipment Code");
-                    PMSJobH.Validate("Maintenance Type", MScheduleLine."Maintenance Type");
-                    PMSJobH.Validate("Location Code", EquipMaster."Location Code");
-                    PMSJobH.Insert();
-                    MScheduleLine."Schedule Start Date" := CalcDate(MScheduleLine.Scheduling, MScheduleLine."Schedule Start Date");
-                    MScheduleLine.Insert();
+                    PMSJobH.Reset();
+                    PMSJobH.SetRange("Schedule No.", Mschehead."Schedule No.");
+                    PMSJobH.SetRange("Creation Date", Today);
+                    if not PMSJobH.FindFirst() then begin
+                        PMSJobH.Init();
+                        Loc.TestField("PMS Job Nos");
+                        NoSeriesMgt.InitSeries(Loc."PMS Job Nos", '', Today, PMSJobH."Job No.", Loc."PMS Job Nos");
+                        PMSJobH.Validate("Schedule No.", Mschehead."Schedule No.");
+                        PMSJobH.Validate("Equipment Code", MScheduleLine."Equipment Code");
+                        PMSJobH.Validate("Maintenance Type", MScheduleLine."Maintenance Type");
+                        PMSJobH.Validate("Location Code", EquipMaster."Location Code");
+                        PMSJobH.Validate("Initial Meter Reading", EquipMaster."Initial Meter Reading");
+                        PMSJobH.Validate("Current Meter Reading", EquipMaster."Current Meter Reading");
+                        PMSJobH."Creation Date" := Today;
+                        PMSJobH."Created By" := UserId;
+                        PMSJobH.Insert();
+
+                        MTaskLine.Reset();
+                        MTaskLine.SetRange("Schedule No.", MScheduleLine."Schedule No.");
+                        MTaskLine.SetRange("Schedule Line No.", MScheduleLine."Line No.");
+                        MTaskLine.SetRange("Equipment Code", MScheduleLine."Equipment Code");
+                        if MTaskLine.FindFirst() then
+                            repeat
+                                Clear(LineCnt);
+                                PMSJobLine.Reset();
+                                PMSJobLine.SetRange("Job No.", PMSJobH."Job No.");
+                                if PMSJobLine.FindLast() then
+                                    LineCnt := PMSJobLine."Line No.";
+
+                                PMSJobLine.Init();
+                                PMSJobLine."Job No." := PMSJobH."Job No.";
+                                PMSJobLine."Line No." := LineCnt + 10000;
+                                PMSJobLine.Validate("Task Code", MTaskLine."Task Code");
+                                PMSJobLine.Insert();
+                            until MTaskLine.Next() = 0;
+
+                        MScheduleLine."Schedule Start Date" := CalcDate(MScheduleLine.Scheduling, MScheduleLine."Schedule Start Date");
+                        MScheduleLine.Modify();
+                        Message('done');
+                    end;
                 end
             until MScheduleLine.Next() = 0;
     end;
@@ -51,6 +87,10 @@ codeunit 50250 "Auto PMS Job Creation"
         PMSJobLine: Record "PMS Job Lines";
         Loc: Record Location;
         NoSeriesMgt: Codeunit NoSeriesManagement;
+        Stime: DateFormula;
+        LineCnt: Integer;
+        MetHrs: Integer;
+        MTaskLine: Record "Manitenance Task Lines";
     begin
         MScheduleLine.Reset();
         MScheduleLine.SetRange("Schedule No.", Mschehead."Schedule No.");
@@ -59,14 +99,54 @@ codeunit 50250 "Auto PMS Job Creation"
             repeat
                 if EquipMaster.Get(MScheduleLine."Equipment Code") then;
                 if Loc.Get(EquipMaster."Location Code") then;
-                //if MScheduleLine."Schedule Start Date" = Today then begin
-                PMSJobH.Init();
-                Loc.TestField("PMS Job Nos");
-                NoSeriesMgt.InitSeries(Loc."PMS Job Nos", '', Today, PMSJobH."Job No.", Loc."PMS Job Nos");
-                PMSJobH.Validate("Schedule No.", Mschehead."Schedule No.");
-                PMSJobH.Validate("Equipment Code", MScheduleLine."Equipment Code");
+                MetHrs := EquipMaster."Initial Meter Reading" + MScheduleLine."Meter Interval in Hrs";
+                if MScheduleLine."Start Meter Interval" <= EquipMaster."Current Meter Reading" then begin
+                    PMSJobH.Reset();
+                    PMSJobH.SetRange("Schedule No.", Mschehead."Schedule No.");
+                    //PMSJobH.SetRange("Creation Date", Today);
+                    if not PMSJobH.FindFirst() then begin
+                        PMSJobH.Init();
+                        Loc.TestField("PMS Job Nos");
+                        NoSeriesMgt.InitSeries(Loc."PMS Job Nos", '', Today, PMSJobH."Job No.", Loc."PMS Job Nos");
+                        PMSJobH.Validate("Schedule No.", Mschehead."Schedule No.");
+                        PMSJobH.Validate("Equipment Code", MScheduleLine."Equipment Code");
+                        PMSJobH.Validate("Maintenance Type", MScheduleLine."Maintenance Type");
+                        PMSJobH.Validate("Location Code", EquipMaster."Location Code");
+                        PMSJobH.Validate("Initial Meter Reading", EquipMaster."Initial Meter Reading");
+                        PMSJobH.Validate("Meter Interval in Hrs", MScheduleLine."Meter Interval in Hrs");
+                        PMSJobH.Validate("Current Meter Reading", EquipMaster."Current Meter Reading");
+                        PMSJobH."Creation Date" := Today;
+                        PMSJobH."Created By" := UserId;
+                        PMSJobH.Insert();
 
-            //end
+                        MTaskLine.Reset();
+                        MTaskLine.SetRange("Schedule No.", MScheduleLine."Schedule No.");
+                        MTaskLine.SetRange("Schedule Line No.", MScheduleLine."Line No.");
+                        MTaskLine.SetRange("Equipment Code", MScheduleLine."Equipment Code");
+                        if MTaskLine.FindFirst() then
+                            repeat
+                                Clear(LineCnt);
+                                PMSJobLine.Reset();
+                                PMSJobLine.SetRange("Job No.", PMSJobH."Job No.");
+                                if PMSJobLine.FindLast() then
+                                    LineCnt := PMSJobLine."Line No.";
+
+                                PMSJobLine.Init();
+                                PMSJobLine."Job No." := PMSJobH."Job No.";
+                                PMSJobLine."Line No." := LineCnt + 10000;
+                                PMSJobLine.Validate("Task Code", MTaskLine."Task Code");
+                                PMSJobLine.Insert();
+                            until MTaskLine.Next() = 0;
+
+                        MScheduleLine."Start Meter Interval" := MScheduleLine."Start Meter Interval" + MScheduleLine."Meter Interval in Hrs";
+                        MScheduleLine.Modify();
+                        Message('done');
+                    end;
+                end
             until MScheduleLine.Next() = 0;
     end;
+
+    var
+        MainSchHead: Record "Maintenance Schedule Header";
+
 }

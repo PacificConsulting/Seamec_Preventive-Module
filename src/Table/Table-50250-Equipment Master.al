@@ -89,11 +89,12 @@ table 50250 "Equipment Master"
                 if EquipRead.FindLast() then begin
                     EquipCnt := EquipRead."Entry No";
                 end;
+                "Current Meter Reading" += "Running Hrs.";
+
                 EquipRead.Reset();
                 EquipRead.SetRange("Equipment code", "Equipment Code");
                 EquipRead.SetRange(Date, Today);
                 if not EquipRead.FindFirst() then begin
-                    "Current Meter Reading" += "Running Hrs.";
                     EquipmentReding.Init();
                     EquipmentReding."Entry No" := cnt12 + 1;
                     EquipmentReding."Equipment code" := "Equipment Code";

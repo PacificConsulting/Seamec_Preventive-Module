@@ -19,7 +19,7 @@ page 50259 "PMS Job Lines"
                 }
                 field("Line No."; rec."Line No.")
                 {
-                    ApplicationArea = all;
+                    //ApplicationArea = all;
                 }
                 field("Task Code"; rec."Task Code")
                 {

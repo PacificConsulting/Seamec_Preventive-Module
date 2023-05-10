@@ -48,10 +48,9 @@ page 50255 "Equipment Card"
                 field("Meter Reading Applicable"; rec."Meter Reading Applicable")
                 {
                     ApplicationArea = all;
-
                     trigger OnValidate()
                     begin
-                        //IsMeterReadingApplicable := rec."Meter Reading Applicable";
+                        IsMeterReadingApplicable := rec."Meter Reading Applicable";
 
                     end;
                 }
@@ -59,6 +58,11 @@ page 50255 "Equipment Card"
                 {
                     Editable = IsMeterReadingApplicable;
                     ApplicationArea = all;
+                    trigger OnValidate()
+                    begin
+                        if Rec."Initial Meter Reading" <> 0 then
+                            IsMeterReadingApplicable := false
+                    end;
                 }
                 field("Running Hrs."; rec."Running Hrs.")
                 {
@@ -104,7 +108,7 @@ page 50255 "Equipment Card"
         }
     }
 
-    trigger OnOpenPage()
+    /*trigger OnOpenPage()
     begin
         if (rec."Meter Reading Applicable") and (Rec."Initial Meter Reading" = 0) then
             IsMeterReadingApplicable := true
@@ -119,6 +123,7 @@ page 50255 "Equipment Card"
         else
             IsMeterReadingApplicable := false;
     end;
+    */
 
     var
         IsMeterReadingApplicable: Boolean;

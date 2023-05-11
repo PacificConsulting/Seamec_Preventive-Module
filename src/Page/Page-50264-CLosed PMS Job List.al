@@ -1,11 +1,13 @@
-page 50257 "PMS Job List"
+page 50264 "Closed PMS Job List"
 {
-    CardPageID = "PMS Job Card";
+    CardPageID = "Closed PMS Job Card";
     ModifyAllowed = false;
     PageType = List;
     SourceTable = 50255;
     UsageCategory = Lists;
     ApplicationArea = all;
+    SourceTableView = WHERE(Status = FILTER(Closed));
+    InsertAllowed = false;
 
     layout
     {

@@ -114,7 +114,7 @@ page 50255 "Equipment Card"
             IsMeterReadingApplicable := true
         else
             IsMeterReadingApplicable := false;
-    end;
+    end;*/
 
     trigger OnAfterGetRecord()
     begin
@@ -123,7 +123,7 @@ page 50255 "Equipment Card"
         else
             IsMeterReadingApplicable := false;
     end;
-    */
+
 
     var
         IsMeterReadingApplicable: Boolean;

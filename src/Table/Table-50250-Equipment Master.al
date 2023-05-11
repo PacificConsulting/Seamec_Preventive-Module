@@ -18,6 +18,14 @@ table 50250 "Equipment Master"
             DataClassification = ToBeClassified;
             // OptionCaption = 'Installed,Withdrawn';
             // OptionMembers = Installed,Withdrawn;
+            trigger onvalidate()
+            var
+                myInt: Integer;
+            begin
+                if Status = Status::Withdrawn then
+                    "Out of Service" := "Out of Service"::No;
+            end;
+
         }
         field(4; Type; Enum "Equipment Type")
         {
@@ -42,6 +50,7 @@ table 50250 "Equipment Master"
         field(8; "Out of Service"; Enum "Out of Service")
         {
             DataClassification = ToBeClassified;
+            Editable = false;
             // OptionCaption = 'Yes,No';
             // OptionMembers = Yes,No;
         }
@@ -61,6 +70,7 @@ table 50250 "Equipment Master"
                     if EquipRead.Findfirst() then begin
                         Error('On this equiment code, entry already exist on Equipment reading')
                     end;
+                    TestField("Initial Meter Reading");
                 end;
             end;
         }

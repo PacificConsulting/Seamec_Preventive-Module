@@ -1,7 +1,10 @@
-page 50258 "PMS Job Card"
+page 50265 "Closed PMS Job Card"
 {
     PageType = Card;
     SourceTable = 50255;
+    InsertAllowed = false;
+    ModifyAllowed = false;
+    DeleteAllowed = false;
 
     layout
     {
@@ -91,27 +94,6 @@ page 50258 "PMS Job Card"
 
     actions
     {
-        area(Processing)
-        {
-            action("Closed PMS")
-            {
-                ApplicationArea = All;
-                trigger OnAction()
-                begin
-                    PMSJob.Reset();
-                    PMSJob.SetRange("Schedule No.", Rec."Schedule No.");
-                    PMSJob.SetFilter("Start Date", '<%1', Rec."Start Date");
-                    PMSJob.SetFilter(Status, '<>%1', PMSJob.Status::Closed);
-                    if NOT PMSJob.FindFirst() then begin
-                        Rec.Status := Rec.Status::Closed;
-                        Rec.Modify();
-                    end
-                end;
-            }
-        }
     }
-
-    var
-        PMSJob: Record "PMS Job Header";
 }
 

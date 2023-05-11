@@ -49,7 +49,7 @@ page 50254 "Maintenance Schedule Line"
                 }
                 field("Schedule Start Date"; Rec."Schedule Start Date")
                 {
-                    ApplicationArea = All;
+                    //ApplicationArea = All;
                     Editable = false;
                 }
 
@@ -63,7 +63,7 @@ page 50254 "Maintenance Schedule Line"
                 }
                 field("Start Meter Interval"; Rec."Start Meter Interval")
                 {
-                    ApplicationArea = All;
+                    //ApplicationArea = All;
                 }
 
             }

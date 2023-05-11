@@ -5,6 +5,7 @@ codeunit 50250 "Auto PMS Job Creation"
     trigger OnRun()
     begin
         MainSchHead.Reset();
+        //MainSchHead.SetRange("Schedule No.", 'TESTING16');
         if MainSchHead.FindSet() then
             repeat
                 AutoMeterInterval(MainSchHead);
@@ -37,11 +38,12 @@ codeunit 50250 "Auto PMS Job Creation"
                 if MScheduleLine."Schedule Start Date" = Today then begin
                     PMSJobH.Reset();
                     PMSJobH.SetRange("Schedule No.", Mschehead."Schedule No.");
+                    PMSJobH.SetRange("Equipment Code", MScheduleLine."Equipment Code");
                     PMSJobH.SetRange("Creation Date", Today);
                     if not PMSJobH.FindFirst() then begin
                         PMSJobH.Init();
                         Loc.TestField("PMS Job Nos");
-                        NoSeriesMgt.InitSeries(Loc."PMS Job Nos", '', Today, PMSJobH."Job No.", Loc."PMS Job Nos");
+                        PMSJobH."Job No." := NoSeriesMgt.GetNextNo(Loc."PMS Job Nos", Today, true);
                         PMSJobH.Validate("Schedule No.", Mschehead."Schedule No.");
                         PMSJobH.Validate("Equipment Code", MScheduleLine."Equipment Code");
                         PMSJobH.Validate("Maintenance Type", MScheduleLine."Maintenance Type");
@@ -49,6 +51,8 @@ codeunit 50250 "Auto PMS Job Creation"
                         PMSJobH.Validate("Initial Meter Reading", EquipMaster."Initial Meter Reading");
                         PMSJobH.Validate("Current Meter Reading", EquipMaster."Current Meter Reading");
                         PMSJobH."Creation Date" := Today;
+                        PMSJobH."Start Date" := Today;
+                        PMSJobH."End Date" := Today;
                         PMSJobH."Created By" := UserId;
                         PMSJobH.Insert();
 
@@ -73,10 +77,10 @@ codeunit 50250 "Auto PMS Job Creation"
 
                         MScheduleLine."Schedule Start Date" := CalcDate(MScheduleLine.Scheduling, MScheduleLine."Schedule Start Date");
                         MScheduleLine.Modify();
-                        Message('done');
                     end;
                 end
             until MScheduleLine.Next() = 0;
+        Message('done');
     end;
 
     Procedure AutoMeterInterval(Mschehead: Record "Maintenance Schedule Header")
@@ -103,11 +107,12 @@ codeunit 50250 "Auto PMS Job Creation"
                 if MScheduleLine."Start Meter Interval" <= EquipMaster."Current Meter Reading" then begin
                     PMSJobH.Reset();
                     PMSJobH.SetRange("Schedule No.", Mschehead."Schedule No.");
-                    //PMSJobH.SetRange("Creation Date", Today);
+                    PMSJobH.SetRange("Equipment Code", MScheduleLine."Equipment Code");
                     if not PMSJobH.FindFirst() then begin
                         PMSJobH.Init();
                         Loc.TestField("PMS Job Nos");
-                        NoSeriesMgt.InitSeries(Loc."PMS Job Nos", '', Today, PMSJobH."Job No.", Loc."PMS Job Nos");
+                        //NoSeriesMgt.InitSeries(Loc."PMS Job Nos", '', Today, PMSJobH."Job No.", Loc."PMS Job Nos");
+                        PMSJobH."Job No." := NoSeriesMgt.GetNextNo(Loc."PMS Job Nos", Today, true);
                         PMSJobH.Validate("Schedule No.", Mschehead."Schedule No.");
                         PMSJobH.Validate("Equipment Code", MScheduleLine."Equipment Code");
                         PMSJobH.Validate("Maintenance Type", MScheduleLine."Maintenance Type");
@@ -116,6 +121,8 @@ codeunit 50250 "Auto PMS Job Creation"
                         PMSJobH.Validate("Meter Interval in Hrs", MScheduleLine."Meter Interval in Hrs");
                         PMSJobH.Validate("Current Meter Reading", EquipMaster."Current Meter Reading");
                         PMSJobH."Creation Date" := Today;
+                        PMSJobH."Start Date" := Today;
+                        PMSJobH."End Date" := Today;
                         PMSJobH."Created By" := UserId;
                         PMSJobH.Insert();
 
@@ -140,10 +147,10 @@ codeunit 50250 "Auto PMS Job Creation"
 
                         MScheduleLine."Start Meter Interval" := MScheduleLine."Start Meter Interval" + MScheduleLine."Meter Interval in Hrs";
                         MScheduleLine.Modify();
-                        Message('done');
                     end;
                 end
             until MScheduleLine.Next() = 0;
+        Message('done');
     end;
 
     var

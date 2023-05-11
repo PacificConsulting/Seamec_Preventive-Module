@@ -4,6 +4,9 @@ page 50262 "Equipment Readings"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = 50258;
+    Editable = false;
+    InsertAllowed = false;
+    DeleteAllowed = false;
 
     layout
     {

@@ -58,7 +58,7 @@ table 50255 "PMS Job Header"
         {
             DataClassification = ToBeClassified;
         }
-        field(11; "Due Date"; Date)
+        field(11; "End Date"; Date)
         {
             DataClassification = ToBeClassified;
         }

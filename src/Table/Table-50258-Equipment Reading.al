@@ -32,6 +32,12 @@ table 50258 "Equipment Reading"
             DataClassification = ToBeClassified;
         }
 
+        field(7; "Counter Code"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
+
+
     }
 
     keys

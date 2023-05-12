@@ -26,16 +26,16 @@ page 50253 "Maintenance Schedule Card"
         }
     }
 
-    actions
-    {
-        area(Processing)
-        {
-            action("Test")
-            {
-                ApplicationArea = all;
-                RunObject = codeunit 50250;
-            }
-        }
-    }
+    // actions
+    // {
+    //     area(Processing)
+    //     {
+    //         action("Test")
+    //         {
+    //             ApplicationArea = all;
+    //             RunObject = codeunit 50250;
+    //         }
+    //     }
+    // }
 }
 

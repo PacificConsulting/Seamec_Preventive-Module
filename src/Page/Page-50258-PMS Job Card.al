@@ -98,13 +98,39 @@ page 50258 "PMS Job Card"
                 ApplicationArea = All;
                 trigger OnAction()
                 begin
+                    PMSJOBLIne.Reset();
+                    PMSJOBLIne.SetRange("Job No.", Rec."Job No.");
+                    if PMSJOBLIne.FindFirst() then
+                        repeat
+                            PMSJOBLIne.TestField("Job Done Comments");
+                        until PMSJOBLIne.Next() = 0;
+
                     PMSJob.Reset();
-                    PMSJob.SetRange("Schedule No.", Rec."Schedule No.");
-                    PMSJob.SetFilter("Start Date", '<%1', Rec."Start Date");
+                    PMSJob.SetRange("Equipment Code", Rec."Equipment Code");
                     PMSJob.SetFilter(Status, '<>%1', PMSJob.Status::Closed);
-                    if NOT PMSJob.FindFirst() then begin
+                    if PMSJob.FindFirst() then begin
+                        cnt := PMSJob.Count;
+                    end;
+
+                    if cnt = 1 then begin
                         Rec.Status := Rec.Status::Closed;
                         Rec.Modify();
+                        Message(Rec."Job No." + ' Job no is closed');
+                    end
+                    else
+                        Error(PMSJob."Job No." + ' job no is open or scheduled for ' + PMSJob."Equipment Code");
+                end;
+            }
+
+            action("Schedule PMS")
+            {
+                ApplicationArea = All;
+                trigger OnAction()
+                begin
+                    if rec.Status = rec.Status::Open then begin
+                        Rec.Status := Rec.Status::Closed;
+                        Rec.Modify();
+                        Message('This ' + Rec."Job No." + ' Job no is scheduled');
                     end
                 end;
             }
@@ -113,5 +139,10 @@ page 50258 "PMS Job Card"
 
     var
         PMSJob: Record "PMS Job Header";
+        cnt: Integer;
+        PMSJOBLIne: Record "PMS Job Lines";
+        EquipCOmment: Record "Equipment Comment";
+        EquuipMaster: Record "Equipment Master";
+        commCount: Integer;
 }
 

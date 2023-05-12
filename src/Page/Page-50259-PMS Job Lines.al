@@ -7,6 +7,7 @@ page 50259 "PMS Job Lines"
     PageType = ListPart;
     SourceTable = 50256;
 
+
     layout
     {
         area(content)

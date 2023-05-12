@@ -24,6 +24,8 @@ table 50250 "Equipment Master"
             begin
                 if Status = Status::Withdrawn then
                     "Out of Service" := "Out of Service"::No;
+                if Status = Status::Installed then
+                    "Out of Service" := "Out of Service"::Yes;
             end;
 
         }
@@ -99,7 +101,6 @@ table 50250 "Equipment Master"
                 if EquipRead.FindLast() then begin
                     EquipCnt := EquipRead."Entry No";
                 end;
-                "Current Meter Reading" += "Running Hrs.";
 
                 EquipRead.Reset();
                 EquipRead.SetRange("Equipment code", "Equipment Code");
@@ -109,22 +110,30 @@ table 50250 "Equipment Master"
                     EquipmentReding."Entry No" := cnt12 + 1;
                     EquipmentReding."Equipment code" := "Equipment Code";
                     EquipmentReding.Description := Description;
-                    if EquipCnt = 0 then
-                        EquipmentReding."Previous Meter Reading" := "Initial Meter Reading"
-                    else
-                        EquipmentReding."Previous Meter Reading" := "Current Meter Reading";
+                    // if EquipCnt = 0 then
+                    //     EquipmentReding."Previous Meter Reading" := "Initial Meter Reading"
+                    // else
+                    EquipmentReding."Previous Meter Reading" := "Current Meter Reading";
                     EquipmentReding."Running Hrs." := "Running Hrs.";
                     EquipmentReding.Date := Today;
                     EquipmentReding.Insert();
                 end else begin
                     Error('On this current date, entry already exist');
                 end;
+
+                "Current Meter Reading" += "Running Hrs.";
             end;
         }
         field(13; "Current Meter Reading"; Decimal)
         {
             DataClassification = ToBeClassified;
             DecimalPlaces = 0 : 0;
+        }
+
+        field(14; "Counter Code"; Text[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Counter Master";
         }
     }
 

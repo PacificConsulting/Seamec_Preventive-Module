@@ -1,6 +1,8 @@
 codeunit 50250 "Auto PMS Job Creation"
 {
-    TableNo = "Maintenance Schedule Header";
+    //TableNo = "Maintenance Schedule Header";
+    TableNo = "Job Queue Entry";
+    Permissions = tabledata 50255 = RIM, tabledata 50256 = RIM, tabledata 50252 = RM;
 
     trigger OnRun()
     begin
@@ -11,6 +13,7 @@ codeunit 50250 "Auto PMS Job Creation"
                 AutoMeterInterval(MainSchHead);
                 AutoSchedulePMS(MainSchHead);
             until MainSchHead.Next() = 0;
+        Message('hi');
     end;
 
     var

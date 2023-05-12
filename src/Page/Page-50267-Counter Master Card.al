@@ -1,7 +1,7 @@
-page 50255 "Equipment Card"
+page 50267 "Counter Card"
 {
     PageType = Card;
-    SourceTable = 50250;
+    SourceTable = 50260;
 
     layout
     {
@@ -9,39 +9,11 @@ page 50255 "Equipment Card"
         {
             group(General)
             {
-                field("Equipment Code"; rec."Equipment Code")
+                field(Code; Rec.Code)
                 {
                     ApplicationArea = all;
                 }
                 field(Description; rec.Description)
-                {
-                    ApplicationArea = all;
-                }
-                field(Status; rec.Status)
-                {
-                    ApplicationArea = all;
-                }
-                field(Type; rec.Type)
-                {
-                    ApplicationArea = all;
-                }
-                field(Department; rec.Department)
-                {
-                    ApplicationArea = all;
-                }
-                field(Owners; rec.Owners)
-                {
-                    ApplicationArea = all;
-                }
-                field("Class Code"; rec."Class Code")
-                {
-                    ApplicationArea = all;
-                }
-                field("Out of Service"; rec."Out of Service")
-                {
-                    ApplicationArea = all;
-                }
-                field("Location Code"; rec."Location Code")
                 {
                     ApplicationArea = all;
                 }
@@ -66,7 +38,6 @@ page 50255 "Equipment Card"
                 }
                 field("Running Hrs."; rec."Running Hrs.")
                 {
-                    //Editable = IsMeterReadingApplicable;
                     ApplicationArea = all;
                 }
                 field("Current Meter Reading"; rec."Current Meter Reading")
@@ -74,12 +45,6 @@ page 50255 "Equipment Card"
                     Editable = False;//IsMeterReadingApplicable;
                     ApplicationArea = all;
                 }
-
-                field("Counter Code"; Rec."Counter Code")
-                {
-                    ApplicationArea = All;
-                }
-
             }
         }
     }
@@ -94,23 +59,24 @@ page 50255 "Equipment Card"
                 Caption = 'Equipment Readings';
                 Image = Image;
                 RunObject = page "Equipment Readings";
-                RunPageLink = "Equipment code" = field("Equipment Code");
+                RunPageLink = "Counter Code" = field(Code);
             }
 
-            action(Comments)
-            {
-                ApplicationArea = all;
-                Image = ViewComments;
-                trigger Onaction()
-                var
-                    EquipComment: Record "Equipment Comment";
-                    pageEquipComm: Page "Equipment Comments";
-                begin
-                    EquipComment.SETRANGE("Equipment Code", Rec."Equipment Code");
-                    pageEquipComm.SETTABLEVIEW(EquipComment);
-                    pageEquipComm.RUNMODAL;
-                end;
-            }
+            // action(Comments)
+            // {
+            //     ApplicationArea = all;
+            //     Image = ViewComments;
+            //     trigger Onaction()
+            //     var
+            //         EquipComment: Record "Equipment Comment";
+            //         pageEquipComm: Page "Equipment Comments";
+            //     begin
+            //         //EquipComment.SETRANGE("Equipment Code", Rec."Equipment Code");
+            //         EquipComment.SETRANGE("Equipment Code", Rec."Equipment Code");
+            //         pageEquipComm.SETTABLEVIEW(EquipComment);
+            //         pageEquipComm.RUNMODAL;
+            //     end;
+            // }
         }
     }
 

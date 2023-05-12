@@ -6,6 +6,7 @@ page 50257 "PMS Job List"
     SourceTable = 50255;
     UsageCategory = Lists;
     ApplicationArea = all;
+    SourceTableView = where(Status = filter(Open | Scheduled));
 
     layout
     {

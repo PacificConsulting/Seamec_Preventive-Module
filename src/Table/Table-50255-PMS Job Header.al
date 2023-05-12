@@ -53,6 +53,7 @@ table 50255 "PMS Job Header"
             DataClassification = ToBeClassified;
             // OptionCaption = 'Open,Scheduled,Closed';
             // OptionMembers = Open,Scheduled,Closed;
+            Editable = false;
         }
         field(10; "Start Date"; Date)
         {

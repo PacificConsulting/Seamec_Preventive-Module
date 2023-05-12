@@ -18,6 +18,11 @@ page 50262 "Equipment Readings"
                 {
                     ApplicationArea = All;
                 }
+                field("Counter Code"; Rec."Counter Code")
+                {
+                    ApplicationArea = All;
+                }
+
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;

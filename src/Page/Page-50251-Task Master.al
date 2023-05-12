@@ -2,6 +2,8 @@ page 50251 "Task Master"
 {
     PageType = List;
     SourceTable = 50251;
+    ApplicationArea = all;
+    UsageCategory = Lists;
 
     layout
     {

@@ -14,10 +14,10 @@ page 50262 "Equipment Readings"
         {
             repeater(Group)
             {
-                field("Equipment code"; rec."Equipment code")
-                {
-                    ApplicationArea = All;
-                }
+                // field("Equipment code"; rec."Equipment code")
+                // {
+                //     ApplicationArea = All;
+                // }
                 field("Counter Code"; Rec."Counter Code")
                 {
                     ApplicationArea = All;

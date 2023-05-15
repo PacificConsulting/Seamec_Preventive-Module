@@ -4,10 +4,10 @@ table 50258 "Equipment Reading"
 
     fields
     {
-        field(1; "Equipment code"; Code[20])
-        {
-            DataClassification = ToBeClassified;
-        }
+        // field(1; "Equipment code"; Code[20])
+        // {
+        //     DataClassification = ToBeClassified;
+        // }
         field(2; Description; Text[100])
         {
             DataClassification = ToBeClassified;

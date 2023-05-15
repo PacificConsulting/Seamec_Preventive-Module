@@ -56,14 +56,16 @@ page 50250 "Equipment Master List"
                 field("Initial Meter Reading"; rec."Initial Meter Reading")
                 {
                     ApplicationArea = all;
+                    Editable = false;
                 }
-                field("Running Hrs."; rec."Running Hrs.")
-                {
-                    ApplicationArea = all;
-                }
+                // field("Running Hrs."; rec."Running Hrs.")
+                // {
+                //     ApplicationArea = all;
+                // }
                 field("Current Meter Reading"; rec."Current Meter Reading")
                 {
                     ApplicationArea = all;
+                    Editable = false;
                 }
             }
         }

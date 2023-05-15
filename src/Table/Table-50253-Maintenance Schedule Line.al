@@ -29,6 +29,7 @@ table 50253 "Maintenance Schedule Line"
                 if MaintSchLine.FindFirst() then
                     Error('Equipment code already exist for this entry');
                 if equipH.Get("Equipment Code") then;
+                equipH.TestField("Counter Code");
                 "Equipment Description" := equipH.Description;
             end;
         }

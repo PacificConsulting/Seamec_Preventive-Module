@@ -1,8 +1,8 @@
 table 50260 "Counter Master"
 {
     DataClassification = ToBeClassified;
-    DrillDownPageID = 50267;
-    LookupPageID = 50267;
+    DrillDownPageID = 50266;
+    LookupPageID = 50266;
 
     fields
     {
@@ -14,8 +14,7 @@ table 50260 "Counter Master"
         {
             DataClassification = ToBeClassified;
         }
-
-        field(3; "Meter Reading Applicable"; Boolean)
+        /*field(3; "Meter Reading Applicable"; Boolean)
         {
             DataClassification = ToBeClassified;
             trigger onvalidate()
@@ -30,7 +29,8 @@ table 50260 "Counter Master"
                     TestField("Initial Meter Reading");
                 end;
             end;
-        }
+        }*/
+
         field(4; "Initial Meter Reading"; Decimal)
         {
             DataClassification = ToBeClassified;
@@ -46,7 +46,7 @@ table 50260 "Counter Master"
             DecimalPlaces = 0 : 0;
             trigger OnValidate()
             begin
-                Rec.TestField("Meter Reading Applicable");
+                //Rec.TestField("Meter Reading Applicable");
                 EquipRead.Reset();
                 if EquipRead.FindLast() then begin
                     cnt12 := EquipRead."Entry No";
@@ -58,13 +58,11 @@ table 50260 "Counter Master"
                 end;
 
                 EquipRead.Reset();
-                // EquipRead.SetRange("Equipment code", "Equipment Code");
                 EquipRead.SetRange("Counter Code", Rec.Code);
                 EquipRead.SetRange(Date, Today);
                 if not EquipRead.FindFirst() then begin
                     EquipmentReding.Init();
                     EquipmentReding."Entry No" := cnt12 + 1;
-                    //EquipmentReding."Equipment code" := "Equipment Code";
                     EquipmentReding."Counter Code" := Rec.Code;
                     EquipmentReding.Description := Description;
                     EquipmentReding."Previous Meter Reading" := "Current Meter Reading";

@@ -21,10 +21,10 @@ page 50266 "Counter Master List"
                 {
                     ApplicationArea = all;
                 }
-                field("Meter Reading Applicable"; rec."Meter Reading Applicable")
-                {
-                    ApplicationArea = all;
-                }
+                // field("Meter Reading Applicable"; rec."Meter Reading Applicable")
+                // {
+                //     ApplicationArea = all;
+                // }
                 field("Initial Meter Reading"; rec."Initial Meter Reading")
                 {
                     ApplicationArea = all;

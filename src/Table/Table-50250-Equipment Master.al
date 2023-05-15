@@ -67,12 +67,12 @@ table 50250 "Equipment Master"
             trigger onvalidate()
             begin
                 if rec."Meter Reading Applicable" = false then begin
-                    EquipRead.Reset();
-                    EquipRead.SetRange("Equipment code", rec."Equipment Code");
-                    if EquipRead.Findfirst() then begin
-                        Error('On this equiment code, entry already exist on Equipment reading')
-                    end;
-                    TestField("Initial Meter Reading");
+                    // EquipRead.Reset();
+                    // EquipRead.SetRange("Equipment code", rec."Equipment Code");
+                    // if EquipRead.Findfirst() then begin
+                    //     Error('On this equiment code, entry already exist on Equipment reading')
+                    // end;
+                    //TestField("Initial Meter Reading");
                 end;
             end;
         }
@@ -80,12 +80,13 @@ table 50250 "Equipment Master"
         {
             DataClassification = ToBeClassified;
             DecimalPlaces = 0 : 0;
-            trigger onvalidate()
-            begin
-                "Current Meter Reading" := "Initial Meter Reading";
-            end;
+            Editable = false;
+            // trigger onvalidate()
+            // begin
+            //     "Current Meter Reading" := "Initial Meter Reading";
+            // end;
         }
-        field(12; "Running Hrs."; Decimal)
+        /*field(12; "Running Hrs."; Decimal)
         {
             DataClassification = ToBeClassified;
             DecimalPlaces = 0 : 0;
@@ -124,16 +125,27 @@ table 50250 "Equipment Master"
                 "Current Meter Reading" += "Running Hrs.";
             end;
         }
+        */
         field(13; "Current Meter Reading"; Decimal)
         {
             DataClassification = ToBeClassified;
             DecimalPlaces = 0 : 0;
+            Editable = false;
         }
 
         field(14; "Counter Code"; Text[20])
         {
             DataClassification = ToBeClassified;
             TableRelation = "Counter Master";
+            trigger OnValidate()
+            var
+                CounMaster: Record "Counter Master";
+            begin
+                Rec.TestField("Meter Reading Applicable");
+                if CounMaster.Get("Counter Code") then;
+                "Initial Meter Reading" := CounMaster."Initial Meter Reading";
+                "Current Meter Reading" := CounMaster."Current Meter Reading";
+            end;
         }
     }
 

@@ -64,11 +64,11 @@ page 50255 "Equipment Card"
                             IsMeterReadingApplicable := false
                     end;
                 }
-                field("Running Hrs."; rec."Running Hrs.")
-                {
-                    //Editable = IsMeterReadingApplicable;
-                    ApplicationArea = all;
-                }
+                // field("Running Hrs."; rec."Running Hrs.")
+                // {
+                //     //Editable = IsMeterReadingApplicable;
+                //     ApplicationArea = all;
+                // }
                 field("Current Meter Reading"; rec."Current Meter Reading")
                 {
                     Editable = False;//IsMeterReadingApplicable;
@@ -78,6 +78,7 @@ page 50255 "Equipment Card"
                 field("Counter Code"; Rec."Counter Code")
                 {
                     ApplicationArea = All;
+
                 }
 
             }
@@ -88,14 +89,14 @@ page 50255 "Equipment Card"
     {
         area(Processing)
         {
-            action("Equipment Reading")
+            /*action("Equipment Reading")
             {
                 ApplicationArea = All;
                 Caption = 'Equipment Readings';
                 Image = Image;
                 RunObject = page "Equipment Readings";
                 RunPageLink = "Equipment code" = field("Equipment Code");
-            }
+            } */
 
             action(Comments)
             {
@@ -114,21 +115,13 @@ page 50255 "Equipment Card"
         }
     }
 
-    /*trigger OnOpenPage()
+    /*trigger OnAfterGetRecord()
     begin
         if (rec."Meter Reading Applicable") and (Rec."Initial Meter Reading" = 0) then
             IsMeterReadingApplicable := true
         else
             IsMeterReadingApplicable := false;
-    end;*/
-
-    trigger OnAfterGetRecord()
-    begin
-        if (rec."Meter Reading Applicable") and (Rec."Initial Meter Reading" = 0) then
-            IsMeterReadingApplicable := true
-        else
-            IsMeterReadingApplicable := false;
-    end;
+    end; */
 
 
     var

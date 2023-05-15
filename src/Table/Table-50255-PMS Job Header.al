@@ -21,6 +21,7 @@ table 50255 "PMS Job Header"
                 equipH: Record "Equipment Master";
             begin
                 if equipH.Get("Equipment Code") then;
+                equipH.TestField("Counter Code");
                 "Equipment Description" := equipH.Description;
             end;
         }

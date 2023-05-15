@@ -17,15 +17,15 @@ page 50267 "Counter Card"
                 {
                     ApplicationArea = all;
                 }
-                field("Meter Reading Applicable"; rec."Meter Reading Applicable")
-                {
-                    ApplicationArea = all;
-                    trigger OnValidate()
-                    begin
-                        IsMeterReadingApplicable := rec."Meter Reading Applicable";
+                // field("Meter Reading Applicable"; rec."Meter Reading Applicable")
+                // {
+                //     ApplicationArea = all;
+                //     trigger OnValidate()
+                //     begin
+                //         IsMeterReadingApplicable := rec."Meter Reading Applicable";
 
-                    end;
-                }
+                //     end;
+                // }
                 field("Initial Meter Reading"; rec."Initial Meter Reading")
                 {
                     Editable = IsMeterReadingApplicable;
@@ -53,10 +53,10 @@ page 50267 "Counter Card"
     {
         area(Processing)
         {
-            action("Equipment Reading")
+            action("Counter Reading")
             {
                 ApplicationArea = All;
-                Caption = 'Equipment Readings';
+                Caption = 'Counter Readings';
                 Image = Image;
                 RunObject = page "Equipment Readings";
                 RunPageLink = "Counter Code" = field(Code);
@@ -80,22 +80,22 @@ page 50267 "Counter Card"
         }
     }
 
-    /*trigger OnOpenPage()
+    trigger OnOpenPage()
     begin
-        if (rec."Meter Reading Applicable") and (Rec."Initial Meter Reading" = 0) then
-            IsMeterReadingApplicable := true
-        else
-            IsMeterReadingApplicable := false;
-    end;*/
-
-    trigger OnAfterGetRecord()
-    begin
-        if (rec."Meter Reading Applicable") and (Rec."Initial Meter Reading" = 0) then
+        if (Rec."Initial Meter Reading" = 0) then
             IsMeterReadingApplicable := true
         else
             IsMeterReadingApplicable := false;
     end;
 
+    trigger OnAfterGetRecord()
+    begin
+        //if (rec."Meter Reading Applicable") and (Rec."Initial Meter Reading" = 0) then
+        if (Rec."Initial Meter Reading" = 0) then
+            IsMeterReadingApplicable := true
+        else
+            IsMeterReadingApplicable := false;
+    end;
 
     var
         IsMeterReadingApplicable: Boolean;

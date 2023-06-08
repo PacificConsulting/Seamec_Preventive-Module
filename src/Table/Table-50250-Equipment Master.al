@@ -72,7 +72,8 @@ table 50250 "Equipment Master"
                     // if EquipRead.Findfirst() then begin
                     //     Error('On this equiment code, entry already exist on Equipment reading')
                     // end;
-                    //TestField("Initial Meter Reading");
+                    TestField("Initial Meter Reading", 0);
+                    TestField("Current Meter Reading", 0);
                 end;
             end;
         }

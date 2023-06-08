@@ -40,7 +40,8 @@
       "publisher": "Microsoft",
       "name": "India TCS",
       "version": "18.3.27240.27480"
-    },
+    },    
+    
     {
       "id": "050f6146-bffd-40de-942c-d0dd510ec20f",
       "publisher": "Microsoft",
@@ -62,7 +63,7 @@
     "allowDownloadingSource": true,
     "includeSourceInSymbolFile": true
   },
-  "runtime": "9.0",
+  "runtime": "11.0",
   "features": [
     "NoImplicitWith"
   ]

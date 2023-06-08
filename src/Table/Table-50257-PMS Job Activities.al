@@ -29,13 +29,67 @@ table 50257 "PMS Job Activities"
         {
             DataClassification = ToBeClassified;
         }
-        field(6; Quantiry; Decimal)
+        field(6; Quantity; Decimal)
         {
             DataClassification = ToBeClassified;
         }
         field(8; "Location Code"; Code[10])
         {
             DataClassification = ToBeClassified;
+            TableRelation = Location;
+        }
+        field(9; "Req no."; Code[30])
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+        field(10; "Req Line no."; Integer)
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+        //PCPL-25/190523
+        field(11; "Vendor No."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = Vendor;
+            trigger OnValidate()
+            var
+                Vend: Record Vendor;
+            begin
+                if Vend.Get("Vendor No.") then;
+                "Vendor Name" := Vend.Name;
+            end;
+        }
+        field(12; "Vendor Name"; Text[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(13; "Work Order No."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(14; "Charge Description"; Text[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(15; "Unit Cost"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(16; Remark; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(17; "Shortcut Dimension Code 1"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = FILTER(1), Blocked = CONST(false));
+        }
+        field(18; "Shortcut Dimension Code 2"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = FILTER(1), Blocked = CONST(false));
         }
     }
 

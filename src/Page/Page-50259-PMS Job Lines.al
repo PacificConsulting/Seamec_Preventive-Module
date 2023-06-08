@@ -37,6 +37,14 @@ page 50259 "PMS Job Lines"
                 field("Job Done Comments"; rec."Job Done Comments")
                 {
                     ApplicationArea = all;
+                    trigger OnValidate()
+                    var
+                        PMS_JobHdr: Record 50255;
+                    Begin
+                        IF PMS_JobHdr.GET(rec."Job No.") then;
+                        IF PMS_JobHdr.Status <> PMS_JobHdr.Status::Scheduled then
+                            Error('You can''t modify line Because order is not scheduled');
+                    End;
                 }
             }
         }

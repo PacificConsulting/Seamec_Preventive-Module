@@ -50,13 +50,13 @@ page 50255 "Equipment Card"
                     ApplicationArea = all;
                     trigger OnValidate()
                     begin
-                        IsMeterReadingApplicable := rec."Meter Reading Applicable";
+                        IsMeterReadingApplicable := (rec."Meter Reading Applicable") AND (rec."Counter Code" = '');
 
                     end;
                 }
                 field("Initial Meter Reading"; rec."Initial Meter Reading")
                 {
-                    Editable = IsMeterReadingApplicable;
+                    Editable = FALSE;// IsMeterReadingApplicable;
                     ApplicationArea = all;
                     trigger OnValidate()
                     begin
@@ -64,23 +64,29 @@ page 50255 "Equipment Card"
                             IsMeterReadingApplicable := false
                     end;
                 }
-                // field("Running Hrs."; rec."Running Hrs.")
-                // {
-                //     //Editable = IsMeterReadingApplicable;
-                //     ApplicationArea = all;
-                // }
+
                 field("Current Meter Reading"; rec."Current Meter Reading")
                 {
-                    Editable = False;//IsMeterReadingApplicable;
+                    Editable = False;
                     ApplicationArea = all;
                 }
 
                 field("Counter Code"; Rec."Counter Code")
                 {
                     ApplicationArea = All;
-
+                    Editable = IsMeterReadingApplicable;
                 }
 
+            }
+        }
+        area(FactBoxes)
+        {
+            part("Attached Documents"; "Document Attachment Factbox")
+            {
+                ApplicationArea = All;
+                Caption = 'Attachments';
+                SubPageLink = "Table ID" = CONST(Database::"Equipment Master"),
+                              "No." = FIELD("Equipment Code");
             }
         }
     }
@@ -89,15 +95,6 @@ page 50255 "Equipment Card"
     {
         area(Processing)
         {
-            /*action("Equipment Reading")
-            {
-                ApplicationArea = All;
-                Caption = 'Equipment Readings';
-                Image = Image;
-                RunObject = page "Equipment Readings";
-                RunPageLink = "Equipment code" = field("Equipment Code");
-            } */
-
             action(Comments)
             {
                 ApplicationArea = all;
@@ -115,13 +112,13 @@ page 50255 "Equipment Card"
         }
     }
 
-    /*trigger OnAfterGetRecord()
+    trigger OnAfterGetRecord()
     begin
-        if (rec."Meter Reading Applicable") and (Rec."Initial Meter Reading" = 0) then
+        if (rec."Meter Reading Applicable") and (Rec."Counter Code" = '') then
             IsMeterReadingApplicable := true
         else
             IsMeterReadingApplicable := false;
-    end; */
+    end;
 
 
     var

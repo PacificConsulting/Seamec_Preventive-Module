@@ -1,4 +1,4 @@
-page 50262 "Equipment Readings"
+page 50262 "Counter Readings"
 {
     PageType = List;
     ApplicationArea = All;

@@ -1,6 +1,7 @@
 page 50264 "Closed PMS Job List"
 {
     CardPageID = "Closed PMS Job Card";
+    Caption = 'Closed Work Order List';
     ModifyAllowed = false;
     PageType = List;
     SourceTable = 50255;
@@ -71,6 +72,11 @@ page 50264 "Closed PMS Job List"
                 {
                     ApplicationArea = All;
                 }
+                field("Closed user ID"; Rec."Closed user ID")
+                {
+                    ApplicationArea = All;
+                }
+
             }
         }
     }

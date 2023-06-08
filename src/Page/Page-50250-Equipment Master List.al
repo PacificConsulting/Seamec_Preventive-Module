@@ -69,6 +69,16 @@ page 50250 "Equipment Master List"
                 }
             }
         }
+        area(FactBoxes)
+        {
+            part("Attached Documents"; "Document Attachment Factbox")
+            {
+                ApplicationArea = All;
+                Caption = 'Attachments';
+                SubPageLink = "Table ID" = CONST(Database::"Equipment Master"),
+                              "No." = FIELD("Equipment Code");
+            }
+        }
     }
 
     actions

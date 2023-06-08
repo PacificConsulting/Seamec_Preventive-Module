@@ -1,6 +1,7 @@
 page 50257 "PMS Job List"
 {
     CardPageID = "PMS Job Card";
+    Caption = 'Work Order List';
     ModifyAllowed = false;
     PageType = List;
     SourceTable = 50255;
@@ -70,12 +71,33 @@ page 50257 "PMS Job List"
                 {
                     ApplicationArea = All;
                 }
+
             }
         }
     }
 
     actions
     {
+        area(Processing)
+        {
+            action(PMSReport)
+            {
+                Caption = 'PMS Job Report';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = PrintReport;
+                trigger OnAction()
+                var
+                    PMS_Hdr: Record "PMS Job Header";
+                Begin
+                    PMS_Hdr.Reset();
+                    PMS_Hdr.SetRange("Job No.", Rec."Job No.");
+                    if PMS_Hdr.FindFirst() then
+                        Report.RunModal(50250, true, true, PMS_Hdr);
+                End;
+            }
+        }
     }
 }
 

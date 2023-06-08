@@ -11,7 +11,7 @@ table 50256 "PMS Job Lines"
         {
             DataClassification = ToBeClassified;
         }
-        field(3; "Task Code"; Code[10])
+        field(3; "Task Code"; Code[20])
         {
             DataClassification = ToBeClassified;
             TableRelation = "Task Master";

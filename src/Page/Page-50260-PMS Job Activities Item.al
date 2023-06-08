@@ -33,7 +33,7 @@ page 50260 "PMS Job Activities-Item"
                 {
                     ApplicationArea = all;
                 }
-                field(Quantiry; rec.Quantiry)
+                field(Quantity; rec.Quantity)
                 {
                     ApplicationArea = all;
                 }
@@ -47,6 +47,33 @@ page 50260 "PMS Job Activities-Item"
 
     actions
     {
+        area(Processing)
+        {
+        }
     }
+
+    var
+        PMSJob: Record "PMS Job Header";
+        cnt: Integer;
+        PMSJOBLIne: Record "PMS Job Lines";
+        EquipCOmment: Record "Equipment Comment";
+        EquuipMaster: Record "Equipment Master";
+        commCount: Integer;
+        PMSHeade: Record "PMS Job Header";
+        PMSJobActivity: Record "PMS Job Activities";
+        //RequisitionHeader: Record "Indent Header";
+        ReqCreated: Boolean;
+        PurchSetup: Record "Purchases & Payables Setup";
+        vLine: Integer;
+        NoSeriesMgt: Codeunit NoSeriesManagement;
+        //RequisitionLine: Record "Indent Line";
+        ItemJournalLine: Record "Item Journal Line";
+        ItemJnlTemplate: Record "Item Journal Template";
+        ItemJnlBatch: Record "Item Journal Batch";
+        recItem: Record Item;
+        PurchaseHeader: Record "Purchase Header";
+        PurchaseLine: Record "Purchase Line";
+        PurchPaySet: Record "Purchases & Payables Setup";
+        genLedSetup: Record "General Ledger Setup";
 }
 

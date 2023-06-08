@@ -9,6 +9,11 @@ pageextension 50250 "MyExtension" extends "Purchases & Payables Setup"
             {
                 ApplicationArea = All;
             }
+            field("Work Order No."; Rec."Work Order No.")
+            {
+                ApplicationArea = All;
+            }
+
 
         }
     }

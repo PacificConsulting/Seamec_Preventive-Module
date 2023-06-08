@@ -21,7 +21,8 @@ table 50255 "PMS Job Header"
                 equipH: Record "Equipment Master";
             begin
                 if equipH.Get("Equipment Code") then;
-                equipH.TestField("Counter Code");
+                if equipH."Meter Reading Applicable" then
+                    equipH.TestField("Counter Code");
                 "Equipment Description" := equipH.Description;
             end;
         }
@@ -95,6 +96,10 @@ table 50255 "PMS Job Header"
             DataClassification = ToBeClassified;
             DecimalPlaces = 0 : 0;
         }
+        field(18; "Closed user ID"; Code[50])
+        {
+            Editable = false;
+        }
 
     }
 
@@ -103,6 +108,10 @@ table 50255 "PMS Job Header"
         key(Key1; "Job No.")
         {
             Clustered = true;
+        }
+        key(MyKey; "Equipment Code", Status, "Creation Date")
+        {
+            //Clustered = false;
         }
     }
 

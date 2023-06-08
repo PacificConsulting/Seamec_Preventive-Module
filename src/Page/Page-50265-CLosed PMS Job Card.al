@@ -2,6 +2,7 @@ page 50265 "Closed PMS Job Card"
 {
     PageType = Card;
     SourceTable = 50255;
+    Caption = 'Closed Work Order Card';
     InsertAllowed = false;
     ModifyAllowed = false;
     DeleteAllowed = false;
@@ -90,6 +91,7 @@ page 50265 "Closed PMS Job Card"
                 SubPageLink = "Job No." = FIELD("Job No.");
             }
         }
+
     }
 
     actions

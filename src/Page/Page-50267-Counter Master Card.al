@@ -17,15 +17,7 @@ page 50267 "Counter Card"
                 {
                     ApplicationArea = all;
                 }
-                // field("Meter Reading Applicable"; rec."Meter Reading Applicable")
-                // {
-                //     ApplicationArea = all;
-                //     trigger OnValidate()
-                //     begin
-                //         IsMeterReadingApplicable := rec."Meter Reading Applicable";
 
-                //     end;
-                // }
                 field("Initial Meter Reading"; rec."Initial Meter Reading")
                 {
                     Editable = IsMeterReadingApplicable;
@@ -58,25 +50,9 @@ page 50267 "Counter Card"
                 ApplicationArea = All;
                 Caption = 'Counter Readings';
                 Image = Image;
-                RunObject = page "Equipment Readings";
+                RunObject = page "Counter Readings";
                 RunPageLink = "Counter Code" = field(Code);
             }
-
-            // action(Comments)
-            // {
-            //     ApplicationArea = all;
-            //     Image = ViewComments;
-            //     trigger Onaction()
-            //     var
-            //         EquipComment: Record "Equipment Comment";
-            //         pageEquipComm: Page "Equipment Comments";
-            //     begin
-            //         //EquipComment.SETRANGE("Equipment Code", Rec."Equipment Code");
-            //         EquipComment.SETRANGE("Equipment Code", Rec."Equipment Code");
-            //         pageEquipComm.SETTABLEVIEW(EquipComment);
-            //         pageEquipComm.RUNMODAL;
-            //     end;
-            // }
         }
     }
 

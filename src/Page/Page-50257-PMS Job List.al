@@ -7,7 +7,7 @@ page 50257 "PMS Job List"
     SourceTable = 50255;
     UsageCategory = Lists;
     ApplicationArea = all;
-    SourceTableView = where(Status = filter(Open | Scheduled));
+    SourceTableView = where(Status = filter(Open | Scheduled | "Ready to Close"));
 
     layout
     {
@@ -97,7 +97,35 @@ page 50257 "PMS Job List"
                         Report.RunModal(50250, true, true, PMS_Hdr);
                 End;
             }
+            action("Work Order Status Report")
+            {
+                Caption = 'Work Order Status Report';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = PrintReport;
+                trigger OnAction()
+                var
+                    PMS_Hdr1: Record "PMS Job Header";
+                Begin
+                    PMS_Hdr1.Reset();
+                    PMS_Hdr1.SetRange("Job No.", Rec."Job No.");
+                    if PMS_Hdr1.FindFirst() then
+                        Report.RunModal(50251, true, true, PMS_Hdr1);
+                End;
+            }
         }
     }
+
+    trigger OnDeleteRecord(): Boolean
+    begin
+        //PCPL-25/280823
+        if useSetup.Get(UserId) then;
+        useSetup.TestField("Delete Equipment", true);
+        //PCPL-25/280823
+    end;
+
+    var
+        useSetup: Record "User Setup";
 }
 

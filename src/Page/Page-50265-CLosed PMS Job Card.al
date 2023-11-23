@@ -96,6 +96,37 @@ page 50265 "Closed PMS Job Card"
 
     actions
     {
+        area(Processing)
+        {
+            action(PMSReport)
+            {
+                Caption = 'PMS Job Report';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = PrintReport;
+                trigger OnAction()
+                var
+                    PMS_Hdr: Record "PMS Job Header";
+                Begin
+                    PMS_Hdr.Reset();
+                    PMS_Hdr.SetRange("Job No.", Rec."Job No.");
+                    if PMS_Hdr.FindFirst() then
+                        Report.RunModal(50250, true, true, PMS_Hdr);
+                End;
+            }
+        }
+
     }
+    trigger OnDeleteRecord(): Boolean
+    begin
+        //PCPL-25/280823
+        if useSetup.Get(UserId) then;
+        useSetup.TestField("Delete Equipment", true);
+        //PCPL-25/280823
+    end;
+
+    var
+        useSetup: Record "User Setup";
 }
 

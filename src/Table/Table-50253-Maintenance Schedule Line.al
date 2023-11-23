@@ -32,6 +32,7 @@ table 50253 "Maintenance Schedule Line"
                 if equipH."Meter Reading Applicable" then
                     equipH.TestField("Counter Code");
                 "Equipment Description" := equipH.Description;
+                "Initial Meter Reading" := equipH."Initial Meter Reading"; //pcpl-064 20sep2023
             end;
         }
         field(4; "Equipment Description"; Text[100])
@@ -55,9 +56,17 @@ table 50253 "Maintenance Schedule Line"
             DataClassification = ToBeClassified;
             trigger OnValidate()
             begin
+                //PCPL-064<< 7nov2023
+                //if "Meter Interval in Hrs" <> ''
+                /*  MSL.Reset();
+                 MSL.SetRange("Meter Interval in Hrs", "Meter Interval in Hrs");
+                 if MSL.FindFirst() then
+                     Error('Equipment can be scheduled either with scheduling or with meter interval at a time'); */
+                //PCPL-064<< 7nov2023
                 if EquipHead.Get("Equipment Code") then;
-                EquipHead.TestField("Meter Reading Applicable", false);
+                // EquipHead.TestField("Meter Reading Applicable", false); 7Nov2023
                 "Schedule Start Date" := CalcDate(Scheduling, "Start Date");
+
             end;
         }
         field(8; Scheduling; DateFormula)
@@ -65,8 +74,14 @@ table 50253 "Maintenance Schedule Line"
             DataClassification = ToBeClassified;
             trigger OnValidate()
             begin
+                //PCPL-064<< 7nov2023
+                /*  MSL.Reset();
+                 MSL.SetRange("Meter Interval in Hrs", "Meter Interval in Hrs");
+                 if MSL.FindFirst() then
+                     Error('Equipment can be scheduled either with scheduling or with meter interval at a time'); */
+                //PCPL-064<< 7nov2023
                 if EquipHead.Get("Equipment Code") then;
-                EquipHead.TestField("Meter Reading Applicable", false);
+                //  EquipHead.TestField("Meter Reading Applicable", false); 7Nov2023
                 "Schedule Start Date" := CalcDate(Scheduling, "Start Date");
             end;
         }
@@ -76,6 +91,14 @@ table 50253 "Maintenance Schedule Line"
             DecimalPlaces = 0 : 0;
             trigger onvalidate()
             begin
+                //PCPL-064<< 7nov2023
+                /* MSL.Reset();
+                MSL.SetCurrentKey("Start Date", Scheduling);
+                MSL.SetFilter(Scheduling, '<>%1', Scheduling);
+                if MSL.FindFirst() then
+                    //  if (rec."Start Date" <> '') and (Scheduling <> '') then
+                    Error('Equipment can be scheduled either with scheduling or with meter interval at a time'); */
+                //PCPL-064<< 7nov2023
                 if EquipHead.Get("Equipment Code") then;
                 EquipHead.TestField("Meter Reading Applicable");
                 "Start Meter Interval" := EquipHead."Initial Meter Reading" + "Meter Interval in Hrs";
@@ -98,6 +121,34 @@ table 50253 "Maintenance Schedule Line"
             DecimalPlaces = 0 : 0;
             Editable = false;
         }
+        field(13; "Initial Meter Reading"; Decimal) //pcpl-064 20sep2023
+        {
+            DataClassification = ToBeClassified;
+            DecimalPlaces = 0 : 0;
+            Editable = false;
+        }
+        field(14; "One Time Adj. Meter Intvl"; Decimal) //pcpl-064 21sep2023
+        {
+
+            DataClassification = ToBeClassified;
+            DecimalPlaces = 0 : 0;
+            // Editable = false;
+            trigger OnValidate()
+            var
+                myInt: Integer;
+            begin
+                //PCPL-064<< 26sep2023
+                TestField("Meter Interval in Hrs");
+                TestField("Start Meter Interval");
+                "Start Meter Interval" := "Start Meter Interval" - "One Time Adj. Meter Intvl"; //pcpl-064 22sep2023
+                // if "One Time Adj. Meter Intvl" <> 0 then
+                //     Error('You can not renter');
+                if xRec."One Time Adj. Meter Intvl" <> 0 then //PCPL-064 26sep2023
+                    Error('You can not Renter the value');
+                //PCPL-064>> 26sep2023
+            end;
+
+        }
     }
 
     keys
@@ -114,9 +165,23 @@ table 50253 "Maintenance Schedule Line"
     fieldgroups
     {
     }
+    trigger OnInsert()
+    begin
+        //PCPL-064<< 26sep2023
+        PMSJobhead.Reset();
+        PMSJobhead.SetRange("Schedule No.", "Schedule No.");
+        PMSJobhead.SetRange("Equipment Code", "Equipment Code");
+        if PMSJobhead.FindFirst() then
+            Error('Already exist');
+        //PCPL-064>> 26sep2023
+
+    end;
 
     var
         EquipHead: Record "Equipment Master";
         MaintSchLine: Record "Maintenance Schedule Line";
+        Bol: Boolean;
+        PMSJobhead: Record "PMS Job Header";
+        MSL: Record "Maintenance Schedule Line";
 }
 

@@ -14,4 +14,12 @@ enum 50257 "PMS Status"
     {
         Caption = 'Closed';
     }
+    value(3; "Ready to Close") //pcpl-064 27sep2023
+    {
+        Caption = 'Ready to Close';
+    }
+    value(4; "Ready to stop")
+    {
+        Caption = 'Ready  to stop';
+    }
 }

@@ -30,13 +30,24 @@ table 50254 "Manitenance Task Lines"
             trigger OnValidate()
             var
                 taskMaster: Record "Task Master";
+            //TASkmasteLines: Record 50261;
             begin
                 if taskMaster.Get("Task Code") then;
                 "Task Name" := taskMaster."Task Name";
                 Activities := taskMaster.Activities;
+
+                /* taskMaster.Reset();
+                taskMaster.SetRange("Task Code", "Task Code");
+                if taskMaster.FindSet() then begin
+                    repeat
+                        "Task Name" := taskMaster."Task Name";
+                        Activities := taskMaster.Activities;
+                    until taskMaster.Next() = 0;
+                end; */
+
             end;
         }
-        field(6; "Task Name"; Text[30])
+        field(6; "Task Name"; Text[250])
         {
             DataClassification = ToBeClassified;
         }
@@ -57,5 +68,7 @@ table 50254 "Manitenance Task Lines"
     fieldgroups
     {
     }
+    var
+        MTL: Record "Manitenance Task Lines";
 }
 

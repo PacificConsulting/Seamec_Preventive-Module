@@ -84,5 +84,36 @@ page 50250 "Equipment Master List"
     actions
     {
     }
+
+    trigger OnDeleteRecord(): Boolean
+    begin
+        //PCPL-25/280823
+        if useSetup.Get(UserId) then;
+        useSetup.TestField("Delete Equipment", true);
+        //PCPL-25/280823
+    end;
+
+    trigger OnOpenPage()
+    begin
+        /* //<<pcpl-064 28sep2023
+        if UserSetup1.Get(UserId) then begin
+            if UserSetup1."Allow to Edit PMS Master" then
+                CurrPage.Editable(false);
+            //<<pcpl-064 28sep2023
+        end; */
+        //<<pcpl -06427sep2023
+        if UserSetup1.get(UserId) then begin
+            if UserSetup1."Allow to Edit PMS Master" = true then
+                CurrPage.Editable(true)
+            else
+                CurrPage.Editable(false);
+        end;
+        //>>pcpl 06427sep2023
+    end;
+
+    var
+        useSetup: Record "User Setup";
+        UserSetup1: Record "User Setup";
 }
+
 

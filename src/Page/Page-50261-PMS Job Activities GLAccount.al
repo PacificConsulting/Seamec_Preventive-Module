@@ -48,7 +48,7 @@ page 50261 "PMS Job Activities-G/L Account"
                 }
                 field("Vendor Name"; Rec."Vendor Name")
                 {
-
+                    ApplicationArea = all;
                 }
                 field("Unit Cost"; Rec."Unit Cost")
                 {

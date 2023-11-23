@@ -4,7 +4,7 @@ report 50250 "PMS Report"
     Caption = 'PMS Job Report';
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = 'src\ReportLayout/PMS Job Report.rdl';
+    RDLCLayout = 'src\ReportLayout/PMS Job Report -2.rdl';
 
 
     dataset
@@ -126,6 +126,31 @@ report 50250 "PMS Report"
                 }
                 column(Job_Done_Comments; "Job Done Comments")
                 {
+
+                }
+                dataitem("Task Activity Lines"; "Task Activity Lines")
+                {
+                    DataItemLink = "Task Code" = field("Task Code");
+                    column(Line_No_; "Line No.")
+                    {
+
+                    }
+                    column(Task_Code_1; "Task Code")
+                    {
+
+                    }
+                    column(Job_Done_Comment; "Job Done Comment")
+                    {
+
+                    }
+                    column(Task_Name_1; "Task Name")
+                    {
+
+                    }
+                    column(Activities_1; Activities)
+                    {
+
+                    }
 
                 }
                 trigger OnAfterGetRecord() //PMS-Line

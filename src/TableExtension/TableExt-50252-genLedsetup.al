@@ -7,6 +7,11 @@ tableextension 50252 "General Ledger Setup EXt" extends "General Ledger Setup"
         {
             DataClassification = ToBeClassified;
         }
+        field(50253; "Counter Reading Modification"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Description = 'PCPL-25/280623';
+        }
     }
 
     var

@@ -21,11 +21,36 @@ table 50250 "Equipment Master"
             trigger onvalidate()
             var
                 myInt: Integer;
+                //PageConfirmation: Page "Password Detail";  //PCPL-25/100823
+                Employee: Record Employee;
+                //ATS: Record "Audit Trail Setup";  //PCPL-25/100823
+                GLSetup: Record "General Ledger Setup";
             begin
                 if Status = Status::Withdrawn then
                     "Out of Service" := "Out of Service"::No;
+
                 if Status = Status::Installed then
                     "Out of Service" := "Out of Service"::Yes;
+                /* //PCPL-0070 27June23 <<
+                IF GLSetup."Password Posting" then begin
+                    IF Status = Status::Installed then begin
+                        Clear(PageConfirmation);
+                        PageConfirmation.LookupMode(true);
+                        if PageConfirmation.RunModal() = Action::LookupOK then begin
+                            CurrentPassword := PageConfirmation.ReturnPassword();
+                            ATS.Reset();
+                            ATS.SetRange("User ID", UserId);
+                            ATS.SetRange(Password, CurrentPassword);
+                            IF not ATS.FindFirst() then
+                                Error('Given password is wrong or setup is missing');
+                            Rec."Employee ID" := ATS."Employee ID";
+                            Rec.Modify();
+                        end Else
+                            Error('Please enter the password for change status.');
+                    end;
+                end;
+                //PCPL-0070 27June23 <<
+ */
             end;
 
         }
@@ -148,6 +173,17 @@ table 50250 "Equipment Master"
                 "Current Meter Reading" := CounMaster."Current Meter Reading";
             end;
         }
+        field(15; "Employee ID"; Code[20])
+        {
+            Editable = false;
+            DataClassification = ToBeClassified;
+            Description = 'PCPL-0070 27June23';
+        }
+        field(16; "Revision Count"; Integer)
+        {
+            DataClassification = ToBeClassified;
+            Description = 'PCPL-064 27sep2023';
+        }
     }
 
     keys
@@ -164,6 +200,7 @@ table 50250 "Equipment Master"
         cnt: Integer;
         cnt12: Integer;
         EquipCnt: integer;
+        CurrentPassword: Text[20];
 
     trigger OnInsert()
     begin

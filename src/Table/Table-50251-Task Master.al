@@ -9,7 +9,7 @@ table 50251 "Task Master"
         {
             DataClassification = ToBeClassified;
         }
-        field(2; "Task Name"; Text[30])
+        field(2; "Task Name"; Text[250])
         {
             DataClassification = ToBeClassified;
         }

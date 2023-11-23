@@ -24,11 +24,11 @@ table 50256 "PMS Job Lines"
                 Activities := TaskMaster.Activities;
             end;
         }
-        field(4; "Task Name"; Text[30])
+        field(4; "Task Name"; Text[250])
         {
             DataClassification = ToBeClassified;
         }
-        field(5; Activities; Text[250])
+        field(5; Activities; Text[500])// Text[250]) //pcpl-065 3/11/23
         {
             DataClassification = ToBeClassified;
         }

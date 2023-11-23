@@ -70,10 +70,33 @@ table 50260 "Counter Master"
                     EquipmentReding.Date := Today;
                     EquipmentReding.Insert();
                 end else begin
-                    Error('On this current date, entry already exist');
+                    //PCPL-25/280623
+                    GenLedSetup.Get();
+                    if GenLedSetup."Counter Reading Modification" then begin
+                        EquipmentReding.Init();
+                        EquipmentReding."Entry No" := cnt12 + 1;
+                        EquipmentReding."Counter Code" := Rec.Code;
+                        EquipmentReding.Description := Description;
+                        EquipmentReding."Previous Meter Reading" := "Current Meter Reading";
+                        EquipmentReding."Running Hrs." := "Running Hrs.";
+                        EquipmentReding.Date := Today;
+                        EquipmentReding.Insert();
+                    end
+                    else
+                        //PCPL-25/280623
+                        Error('On this current date, entry already exist');
                 end;
 
                 "Current Meter Reading" += "Running Hrs.";
+                //PCPL-25/280623
+                EquipMaster.Reset();
+                EquipMaster.SetRange("Counter Code", Rec.Code);
+                if EquipMaster.FindSet() then
+                    repeat
+                        EquipMaster."Current Meter Reading" := "Current Meter Reading";
+                        EquipMaster.Modify();
+                    until EquipMaster.Next() = 0;
+                //PCPL-25/280623
             end;
         }
         field(6; "Current Meter Reading"; Decimal)
@@ -97,6 +120,8 @@ table 50260 "Counter Master"
         cnt: Integer;
         cnt12: Integer;
         EquipCnt: integer;
+        GenLedSetup: Record "General Ledger Setup";
+        EquipMaster: Record "Equipment Master";
 
     trigger OnInsert()
     begin

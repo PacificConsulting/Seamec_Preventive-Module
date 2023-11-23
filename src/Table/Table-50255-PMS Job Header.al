@@ -100,6 +100,17 @@ table 50255 "PMS Job Header"
         {
             Editable = false;
         }
+        field(19; "System Created"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Description = 'pcpl-064 27sep2023';
+            Editable = false;
+        }
+        field(20; "Assigned to designation"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Select Designation";
+        }
 
     }
 

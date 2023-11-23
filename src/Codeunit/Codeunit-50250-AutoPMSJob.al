@@ -57,6 +57,7 @@ codeunit 50250 "Auto PMS Job Creation"
                         PMSJobH."Start Date" := Today;
                         PMSJobH."End Date" := Today;
                         PMSJobH."Created By" := UserId;
+                        PMSJobH."System Created" := true; //PCPL-064 27SEP2023
                         PMSJobH.Insert();
 
                         MTaskLine.Reset();
@@ -127,6 +128,7 @@ codeunit 50250 "Auto PMS Job Creation"
                         PMSJobH."Start Date" := Today;
                         PMSJobH."End Date" := Today;
                         PMSJobH."Created By" := UserId;
+                        PMSJobH."System Created" := true;
                         PMSJobH.Insert();
 
                         MTaskLine.Reset();

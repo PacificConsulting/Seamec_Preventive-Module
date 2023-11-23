@@ -20,7 +20,7 @@ page 50259 "PMS Job Lines"
                 }
                 field("Line No."; rec."Line No.")
                 {
-                    //ApplicationArea = all;
+                    ApplicationArea = all;
                 }
                 field("Task Code"; rec."Task Code")
                 {
@@ -30,7 +30,7 @@ page 50259 "PMS Job Lines"
                 {
                     ApplicationArea = all;
                 }
-                field(Activities; rec.Activities)
+                /*field(Activities; rec.Activities)
                 {
                     ApplicationArea = all;
                 }
@@ -45,13 +45,50 @@ page 50259 "PMS Job Lines"
                         IF PMS_JobHdr.Status <> PMS_JobHdr.Status::Scheduled then
                             Error('You can''t modify line Because order is not scheduled');
                     End;
-                }
+                }*/ //PCPL-25/040923
             }
         }
     }
 
     actions
     {
+        area(Processing)
+        {
+            action("Task Lines")
+            {
+                ApplicationArea = all;
+                RunObject = page "Task Activity List";
+                RunPageLink = "Task Code" = field("Task Code");
+            }
+        }
     }
+    trigger OnModifyRecord(): Boolean
+    var
+        myInt: Integer;
+    begin
+        PMSHeader.Reset();
+        PMSHeader.SetRange("Job No.", rec."Job No.");
+        if PMSHeader.FindFirst() then begin
+            if PMSHeader."System Created" = true then  //PCPL -064 27sep2023
+                Error('You can not modify system created work order');
+        end;
+    end;
+
+    /*  trigger OnOpenPage()
+     var
+         myInt: Integer;
+     begin
+         //PCPL -064 27sep2023
+         PMSHeader.Reset();
+         PMSHeader.SetRange("Job No.", rec."Job No.");
+         if PMSHeader.FindFirst() then begin
+             if PMSHeader."System Created" = true then  //PCPL -064 27sep2023
+                 Error('You can not modify system created work order');
+         end;
+
+     end; */
+
+    var
+        PMSHeader: record "PMS Job Header";
 }
 

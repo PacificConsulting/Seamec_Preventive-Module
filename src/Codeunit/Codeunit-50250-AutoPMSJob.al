@@ -124,6 +124,7 @@ codeunit 50250 "Auto PMS Job Creation"
                         PMSJobH.Validate("Initial Meter Reading", EquipMaster."Initial Meter Reading");
                         PMSJobH.Validate("Meter Interval in Hrs", MScheduleLine."Meter Interval in Hrs");
                         PMSJobH.Validate("Current Meter Reading", EquipMaster."Current Meter Reading");
+                        PMSJobH.Validate(Department, EquipMaster.Department);
                         PMSJobH."Creation Date" := Today;
                         PMSJobH."Start Date" := Today;
                         PMSJobH."End Date" := Today;

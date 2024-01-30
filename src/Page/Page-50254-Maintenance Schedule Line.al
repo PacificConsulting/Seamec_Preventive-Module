@@ -108,6 +108,14 @@ page 50254 "Maintenance Schedule Line"
                 {
                     ApplicationArea = all;
                 }
+                field(SystemCreatedAt; Rec.SystemCreatedAt)//pcpl-064 12dec2023
+                {
+                    ApplicationArea = all;
+                }
+                field(SystemModifiedAt; Rec.SystemModifiedAt)//pcpl-064 12dec2023
+                {
+                    ApplicationArea = all;
+                }
 
             }
         }

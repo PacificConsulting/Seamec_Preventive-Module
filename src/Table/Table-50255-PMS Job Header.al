@@ -24,6 +24,7 @@ table 50255 "PMS Job Header"
                 if equipH."Meter Reading Applicable" then
                     equipH.TestField("Counter Code");
                 "Equipment Description" := equipH.Description;
+                Department := equipH.Department;
             end;
         }
         field(4; "Equipment Description"; Text[100])

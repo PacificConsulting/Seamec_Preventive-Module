@@ -4,7 +4,7 @@ report 50251 "Work Order Status Report"
     Caption = 'Work Order Status Report';
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = 'src\ReportLayout/Work Order Status Report.rdl';
+    RDLCLayout = 'src\ReportLayout/Work Order Status Report -1.rdl';
 
     dataset
     {
@@ -59,6 +59,30 @@ report 50251 "Work Order Status Report"
             {
 
             }
+            column(RecStatus; RecStatus)
+            {
+
+            }
+            column(RecDepartment; RecDepartment)
+            {
+
+            }
+            column(Fromdate; Fromdate)
+            {
+
+            }
+            column(Todate; Todate)
+            {
+
+            }
+            column(Department; Department)
+            {
+
+            }
+            column(JobDoneComments; JobDoneComments)
+            {
+
+            }
 
             trigger OnAfterGetRecord()
             var
@@ -72,6 +96,18 @@ report 50251 "Work Order Status Report"
                 end;
 
                 CurrDate := CurrentDateTime;
+                PMSJobLines.Reset();
+                PMSJobLines.SetRange("Job No.", "Job No.");
+                if PMSJobLines.FindSet() then
+                    TaskActLines.Reset();
+                TaskActLines.SetRange("Task Code", PMSJobLines."Task Code");
+                if TaskActLines.FindSet() then
+                    repeat
+                        IF TaskActLines."Job Done Comment" <> '' then
+                            JobDoneComments += TaskActLines."Job Done Comment" + ',';
+                    until TaskActLines.Next() = 0;
+                if JobDoneComments <> '' then
+                    JobDoneComments := DelStr(JobDoneComments, StrLen(JobDoneComments), 1);
 
             end;
         }
@@ -112,6 +148,12 @@ report 50251 "Work Order Status Report"
     begin
         CompanyInfo.GET;
         CompanyInfo.CalcFields(Picture);
+        RecStatus := "PMS Job Header".GetFilter(Status);
+        RecDepartment := "PMS Job Header".GetFilter(Department);
+        if "PMS Job Header".GetFilter("Creation Date") <> '' then begin
+            Fromdate := "PMS Job Header".GetRangeMin("Creation Date");
+            Todate := "PMS Job Header".GetRangeMax("Creation Date");
+        end;
     end;
 
     var
@@ -119,4 +161,12 @@ report 50251 "Work Order Status Report"
         RecUserSetup: Record "User Setup";
         users: code[100];
         CurrDate: DateTime;
+        RecStatus: Text;
+        JobDoneComments: Text;
+        RecDepartment: Text;
+        Fromdate: Date;
+        Todate: Date;
+        TaskActLines: Record "Task Activity Lines";
+        PMSJobLines: Record "PMS Job Lines";
+
 }
